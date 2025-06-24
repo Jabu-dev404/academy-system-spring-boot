@@ -4,6 +4,7 @@ package com.academy_system.maths.science_academy.service.domainObject;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class StudentDO {
@@ -12,6 +13,7 @@ public class StudentDO {
     private String name;
     private String surname;
     private String gender;
+    private int grade;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dOB;
@@ -27,6 +29,8 @@ public class StudentDO {
     private String guardianSurname;
     private String guardianCellphoneNo;
     private UserDO user;
+    private List<SubjectDO> subjects;
+    private List<TransactionDO> transactions;
 
 
     public int getId() {
@@ -83,6 +87,14 @@ public class StudentDO {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
 
     public String getStudentNo() {
@@ -165,6 +177,22 @@ public class StudentDO {
         this.user = user;
     }
 
+    public List<SubjectDO> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<SubjectDO> subjects) {
+        this.subjects = subjects;
+    }
+
+    public List<TransactionDO> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransactionDO> transactions) {
+        this.transactions = transactions;
+    }
+
     @Override
     public String toString() {
         return "StudentDO{" +
@@ -173,6 +201,7 @@ public class StudentDO {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", gender='" + gender + '\'' +
+                ", grade=" + grade +
                 ", dOB=" + dOB +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", studentNo='" + studentNo + '\'' +

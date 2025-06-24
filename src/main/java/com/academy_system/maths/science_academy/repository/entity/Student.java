@@ -3,6 +3,8 @@ package com.academy_system.maths.science_academy.repository.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +27,9 @@ public class Student {
 
     @Column(name = "gender")
     private String gender;
+
+    @Column(name = "grade")
+    private int grade;
 
     @Column(name = "date_of_birth")
     private LocalDate dOB;
@@ -61,6 +66,16 @@ public class Student {
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
     private User user;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Transaction> transactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
+    private List<Attendance> attendances = new ArrayList<>();
+
+    @OneToMany(mappedBy = "student",cascade = CascadeType.ALL)
+    private List<Result> results = new ArrayList<>();
+
 
 
     public int getId() {
@@ -103,6 +118,13 @@ public class Student {
         this.gender = gender;
     }
 
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
 
     public String getStudentNo() {
         return studentNo;
@@ -201,14 +223,62 @@ public class Student {
         user.setStudent(this);
     }
 
+    public List<Result> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
+    }
+
+    public  void addResults(Result result){
+        results.add(result);
+        result.setStudent(this);
+    }
+
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public void addTransaction(Transaction transaction) {
+        if (transactions == null) {
+           transactions = new ArrayList<>();
+        }
+
+        transactions.add(transaction);
+        transaction.setStudent(this);
+    }
+
+    public List<Attendance> getAttendances() {
+        return attendances;
+    }
+
+    public void setAttendances(List<Attendance> attendances) {
+        this.attendances = attendances;
+    }
+
+    public void addAttendance(Attendance attendance){
+        attendances.add(attendance);
+        attendance.setStudent(this);
+
+    }
+
+
+
     @Override
     public String toString() {
         return "Student{" +
                 "id=" + id +
-                ", status=" + status +
+                ", status='" + status + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", gender='" + gender + '\'' +
+                ", grade=" + grade +
                 ", dOB=" + dOB +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", studentNo='" + studentNo + '\'' +
@@ -234,4 +304,6 @@ public class Student {
     public int hashCode() {
         return Objects.hash(studentNo, idNo);
     }
+
+
 }

@@ -47,6 +47,7 @@ public class StudentController {
             responseRequest.setMessage("logged in");
 
             StudentDO studentDO = studentService.findStudentByUserName(user.getUsername());
+            System.out.println(studentDO.getUser().getUsername() +  " " + studentDO.getUser().getPassword());
             return ResponseEntity.ok(studentDO);
         } catch (BadCredentialsException e) {
             responseRequest.setMessage("bad credentials");
@@ -67,15 +68,14 @@ public class StudentController {
     @PostMapping("/apply")
     public ResponseEntity<?> apply(@RequestBody StudentDO studentDO){
         String cutName = studentDO.getUser().getPassword().substring(6);
-        studentDO.getUser().setPassword(cutName);
         ResponseRequest responseRequest = new ResponseRequest();
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(studentDO.getUser().getUsername(), studentDO.getUser().getPassword())
+                    new UsernamePasswordAuthenticationToken(studentDO.getUser().getUsername(),cutName)
 
             );
-
-
+            System.out.println(studentDO.getTransactions().get(0).getAmount());
+            System.out.println(studentDO.getSubjects().get(0).getSubjectName() + " " + studentDO.getSubjects().get(0).getResults().get(0).getMarks());
 
             studentService.apply(studentDO);
 

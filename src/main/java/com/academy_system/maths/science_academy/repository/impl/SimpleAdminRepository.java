@@ -1,10 +1,11 @@
 package com.academy_system.maths.science_academy.repository.impl;
 
 import com.academy_system.maths.science_academy.repository.AdminRepository;
-import com.academy_system.maths.science_academy.repository.entity.Student;
+import com.academy_system.maths.science_academy.repository.entity.*;
 import com.academy_system.maths.science_academy.service.domainObject.StudentDO;
-import com.academy_system.maths.science_academy.tools.StudentDOConvertor;
-import com.academy_system.maths.science_academy.tools.StudentEntityConvertor;
+import com.academy_system.maths.science_academy.service.domainObject.SubjectDO;
+import com.academy_system.maths.science_academy.service.domainObject.TimeTableDO;
+import com.academy_system.maths.science_academy.tools.*;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -15,11 +16,19 @@ public class SimpleAdminRepository implements AdminRepository {
     private final EntityManager entityManager;
     private final StudentDOConvertor convertor;
     private final StudentEntityConvertor entityConvertor;
+    private  final SubjectDOConvertor subjectDOConvertor;
+    private  final SubjectEntityConvertor subjectEntityConvertor;
+    private final TimetableDOConvertor timetableDOConvertor;
+    private  final TimetableEntityConvertor timetableEntityConvertor;
 
     public SimpleAdminRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
         convertor = new StudentDOConvertor();
         entityConvertor = new StudentEntityConvertor();
+        subjectDOConvertor = new SubjectDOConvertor();
+        subjectEntityConvertor = new SubjectEntityConvertor();
+        timetableDOConvertor = new TimetableDOConvertor();
+        timetableEntityConvertor = new TimetableEntityConvertor();
     }
 
 
@@ -38,7 +47,69 @@ public class SimpleAdminRepository implements AdminRepository {
     @Override
     public void updateStudent(StudentDO studentDO) {
         Student student = entityConvertor.fromStudentDOToStudent(studentDO);
-
         entityManager.merge(student);
     }
+
+    @Override
+    public void saveSubject(SubjectDO subjectDO) {
+        Subject subject = subjectEntityConvertor.fromSubjectDOToSubjectEntity(subjectDO);
+        entityManager.persist(subject);
+    }
+
+    @Override
+    public List<SubjectDO> viewSubjects() {
+        List<Subject>  subjectDOList = entityManager.createQuery("from Subject", Subject.class).getResultList();
+
+        return subjectDOConvertor.fromSubjectListToSubjectDOList(subjectDOList);
+    }
+
+    @Override
+    public void updateSubject(SubjectDO subjectDO) {
+        Subject subject= subjectEntityConvertor.fromSubjectDOToSubjectEntity(subjectDO);
+        entityManager.merge(subject);
+    }
+    @Override
+    public StudentDO findStudentByUsername(final String username) {
+        User user = entityManager.createQuery("select u from User u where u.username =:data", User.class).setParameter("data", username).getSingleResult();
+
+        return convertor.fromStudentToStudentDO(user.getStudent());
+    }
+
+    public void saveLesson(SubjectDO subjectDO){
+        Subject subject = subjectEntityConvertor.fromSubjectDOToSubjectEntity(subjectDO);
+
+//        Subject subject = new Subject();
+//        subject.setId(1);
+//        Lesson lesson = new Lesson();
+//        Student student = new Student();
+//        student.setId(2);
+//        Attendance attendance = new Attendance();
+//        attendance.setStudent(student);
+//        attendance.setPresent(true);
+//        lesson.setTopic("factorisation");
+//        lesson.setSubTopic("solve for x");
+//        lesson.addAttendance(attendance);
+//        subject.addLesson(lesson);
+
+
+
+        entityManager.merge(subject);
+    }
+
+
+
+
+
+
+
+
+    @Override
+    public void saveTimeTable(TimeTableDO timeTableDO) {
+         TimeTable timeTable = timetableEntityConvertor.fromTimetableDOToTimetableEntity(timeTableDO);
+         entityManager.persist(timeTable);
+    }
+
+
+
+
 }

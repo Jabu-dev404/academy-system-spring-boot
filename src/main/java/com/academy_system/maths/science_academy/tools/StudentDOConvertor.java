@@ -1,8 +1,10 @@
 package com.academy_system.maths.science_academy.tools;
 
 import com.academy_system.maths.science_academy.repository.entity.Student;
+import com.academy_system.maths.science_academy.repository.entity.Transaction;
 import com.academy_system.maths.science_academy.service.domainObject.RoleDO;
 import com.academy_system.maths.science_academy.service.domainObject.StudentDO;
+import com.academy_system.maths.science_academy.service.domainObject.TransactionDO;
 import com.academy_system.maths.science_academy.service.domainObject.UserDO;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class StudentDOConvertor {
         studentDO.setSurname(student.getSurname());
         studentDO.setEmailAddress(student.getEmailAddress());
         studentDO.setGender(student.getGender());
+        studentDO.setGrade(student.getGrade());
         studentDO.setDOB(student.getDOB());
         studentDO.setStudentNo(student.getStudentNo());
         studentDO.setIdNo(student.getIdNo());
@@ -40,6 +43,45 @@ public class StudentDOConvertor {
             user.setRole(role);
             studentDO.setUser(user);
         }
+        if(student.getTransactions() != null){
+            List<TransactionDO> transactionDOList = new ArrayList<>();
+            for(Transaction transaction : student.getTransactions()){
+                TransactionDO transactionDO = new TransactionDO();
+                transactionDO.setId(transaction.getId());
+                transactionDO.setAmount(transaction.getAmount());
+                transactionDO.setDate(transaction.getDate());
+                transactionDOList.add(transactionDO);
+            }
+            studentDO.setTransactions(transactionDOList);
+        }
+
+//        if(student.getSubjects() != null){
+//            List<SubjectDO>  subjects = new ArrayList<>();
+//
+//            for (Subject subject:student.getSubjects()){
+//                SubjectDO subjectDO = new SubjectDO();
+//                subjectDO.setSubjectName(subject.getName());
+//                subjectDO.setId(subject.getId());
+//
+//                if(subject.getResults() != null){
+//                    List<ResultsDO> results = new ArrayList<>();
+//                    for (Result result: subject.getResults()){
+//                        ResultsDO resultsDO = new ResultsDO();
+//                        resultsDO.setId(result.getId());
+//                        resultsDO.setMarks(result.getMarks());
+//                        resultsDO.setTerm(result.getTerm());
+//                        resultsDO.setYear(result.getYear());
+//                        results.add(resultsDO);
+//                    }
+//                    subjectDO.setResults(results);
+//                }
+//
+//
+//                subjects.add(subjectDO);
+//
+//            }
+//            studentDO.setSubjects(subjects);
+//        }
 
         return studentDO;
     }
@@ -54,6 +96,7 @@ public class StudentDOConvertor {
             studentDO.setSurname(student.getSurname());
             studentDO.setEmailAddress(student.getEmailAddress());
             studentDO.setGender(student.getGender());
+            studentDO.setGrade(student.getGrade());
             studentDO.setDOB(student.getDOB());
             studentDO.setStudentNo(student.getStudentNo());
             studentDO.setIdNo(student.getIdNo());
@@ -76,6 +119,47 @@ public class StudentDOConvertor {
                 user.setRole(role);
                 studentDO.setUser(user);
             }
+            if(student.getTransactions() != null){
+                List<TransactionDO> transactionDOList = new ArrayList<>();
+                for(Transaction transaction : student.getTransactions()){
+                    TransactionDO transactionDO = new TransactionDO();
+                    transactionDO.setId(transaction.getId());
+                    transactionDO.setAmount(transaction.getAmount());
+                    transactionDO.setDate(transaction.getDate());
+                    transactionDOList.add(transactionDO);
+                }
+                studentDO.setTransactions(transactionDOList);
+            }
+//            if(student.getSubjects() != null){
+//                List<SubjectDO>  subjects = new ArrayList<>();
+//
+//                for (Subject subject:student.getSubjects()){
+//                    SubjectDO subjectDO = new SubjectDO();
+//                    subjectDO.setSubjectName(subject.getName());
+//                    subjectDO.setId(subject.getId());
+//
+//                    if(subject.getResults() != null){
+//                        List<ResultsDO> results = new ArrayList<>();
+//                        for (Result result: subject.getResults()){
+//                            ResultsDO resultsDO = new ResultsDO();
+//                            resultsDO.setId(result.getId());
+//                            resultsDO.setMarks(result.getMarks());
+//                            resultsDO.setTerm(result.getTerm());
+//                            resultsDO.setYear(result.getYear());
+//                            results.add(resultsDO);
+//                        }
+//                        subjectDO.setResults(results);
+//                    }
+//
+//
+//
+//                    subjects.add(subjectDO);
+//
+//                }
+//
+//                studentDO.setSubjects(subjects);
+//            }
+
             students.add(studentDO);
         }
         return students;

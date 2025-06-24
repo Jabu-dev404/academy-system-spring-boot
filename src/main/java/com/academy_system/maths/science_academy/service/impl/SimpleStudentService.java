@@ -38,30 +38,6 @@ public class SimpleStudentService implements StudentService {
     @Transactional
     @Override
     public void apply(StudentDO studentDO) {
-
-        StudentDO studentDO1 = findStudentByUserName(studentDO.getUser().getUsername());
-        studentDO1.setStatus("PENDING");
-        studentDO1.setName(studentDO.getName());
-        studentDO1.setSurname(studentDO.getSurname());
-        studentDO1.setEmailAddress(studentDO.getEmailAddress());
-        studentDO1.setDOB(studentDO.getDOB());
-        studentDO1.setGender(studentDO.getGender());
-        studentDO1.setStudentNo(studentDO.getStudentNo());
-        studentDO1.setStudentCellphoneNo(studentDO.getStudentCellphoneNo());
-        studentDO1.setHouseNumber(studentDO.getHouseNumber());
-        studentDO1.setStreetName(studentDO.getStreetName());
-        studentDO1.setPostalCode(studentDO.getPostalCode());
-        studentDO1.setGuardianName(studentDO.getGuardianName());
-        studentDO1.setGuardianSurname(studentDO.getGuardianSurname());
-        studentDO1.setGuardianCellphoneNo(studentDO.getGuardianCellphoneNo());
-        System.out.println(studentDO1.getStatus());
-        update(studentDO1);
-    }
-
-    public void update(StudentDO studentDO){
         repository.update(studentDO);
     }
-
-
-
 }

@@ -1,11 +1,13 @@
 package com.academy_system.maths.science_academy.repository;
 
 import com.academy_system.maths.science_academy.service.domainObject.StudentDO;
+import com.academy_system.maths.science_academy.service.domainObject.SubjectDO;
 
 public interface StudentRepository {
     StudentDO findStudentByUsername(final String username);
     void save(StudentDO studentDO);
     void update(StudentDO studentDO);
+    SubjectDO findById(int id);
 
 
 }
