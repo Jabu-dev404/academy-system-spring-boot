@@ -7,6 +7,7 @@ import com.academy_system.maths.science_academy.service.domainObject.SubjectDO;
 import com.academy_system.maths.science_academy.service.domainObject.TimeTableDO;
 import com.academy_system.maths.science_academy.tools.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -63,6 +64,7 @@ public class SimpleAdminRepository implements AdminRepository {
         return subjectDOConvertor.fromSubjectListToSubjectDOList(subjectDOList);
     }
 
+
     @Override
     public void updateSubject(SubjectDO subjectDO) {
         Subject subject= subjectEntityConvertor.fromSubjectDOToSubjectEntity(subjectDO);
@@ -96,20 +98,33 @@ public class SimpleAdminRepository implements AdminRepository {
         entityManager.merge(subject);
     }
 
-
-
-
-
-
-
-
     @Override
     public void saveTimeTable(TimeTableDO timeTableDO) {
          TimeTable timeTable = timetableEntityConvertor.fromTimetableDOToTimetableEntity(timeTableDO);
          entityManager.persist(timeTable);
     }
 
+    @Override
+    public StudentDO deRegisterStudent(StudentDO studentDO) {
+        Student student = entityConvertor.fromStudentDOToStudent(studentDO);
+        Student student1 = entityManager.find(Student.class, student.getId());
+        entityManager.remove(student1);
 
+        return studentDO = convertor.fromStudentToStudentDO(student1);
+    }
+
+    @Override
+    public List<TimeTableDO> viewTimetable() {
+        List<TimeTable> timeTable = entityManager.createQuery("from TimeTable", TimeTable.class).getResultList();
+
+        return timetableDOConvertor.fromTimetableEntityListTOTimetableDOList(timeTable);
+    }
+
+    @Override
+    public String getLastStudentNo() {
+        Query query = entityManager.createNativeQuery("Select student_no From students ORDER BY student_no DESC LIMIT 1");
+        return (String) query.getSingleResult();
+    }
 
 
 }

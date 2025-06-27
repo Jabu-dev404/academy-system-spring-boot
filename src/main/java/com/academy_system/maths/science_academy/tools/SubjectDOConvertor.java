@@ -87,6 +87,9 @@ public class SubjectDOConvertor {
                     userDO.setUsername(result.getStudent().getUser().getUsername());
                     userDO.setPassword(result.getStudent().getUser().getPassword());
                     studentDO.setUser(userDO);
+                    resultDO.setMarks(result.getMarks());
+                    resultDO.setTerm(result.getTerm());
+                    resultDO.setYear(result.getYear());
                     resultDO.setStudent(studentDO);
                     resultsDOS.add(resultDO);
                 }

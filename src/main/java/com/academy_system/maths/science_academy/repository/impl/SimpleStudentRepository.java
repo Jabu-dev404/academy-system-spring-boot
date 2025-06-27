@@ -59,6 +59,8 @@ public class SimpleStudentRepository implements StudentRepository {
       return subjectDOConvertor.fromSubjectEntityToSubjectDO(subject);
     }
 
+
+
     public void updateSubjects(Subject subject){
         entityManager.merge(subject);
     }

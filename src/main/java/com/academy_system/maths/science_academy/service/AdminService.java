@@ -20,4 +20,8 @@ public interface AdminService {
     void capturePayment(StudentDO studentDO);
     void captureLesson(SubjectDO subjectDO);
     void captureTimeTable(TimeTableDO timeTableDO);
+    StudentDO deRegisterStudent(StudentDO studentDO);
+    List<TimeTableDO> viewTimeTable();
+    List<SubjectDO> bestPerformingStudents();
+    long getLastStudentNo();
 }

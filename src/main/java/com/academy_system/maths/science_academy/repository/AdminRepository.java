@@ -16,4 +16,7 @@ public interface AdminRepository {
     StudentDO findStudentByUsername(final String username);
     void saveLesson(SubjectDO subjectDO);
     void saveTimeTable(TimeTableDO timeTableDO);
+    StudentDO deRegisterStudent(StudentDO studentDO);
+    List<TimeTableDO> viewTimetable();
+    String getLastStudentNo();
 }

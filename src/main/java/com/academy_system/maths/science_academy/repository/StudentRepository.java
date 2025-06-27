@@ -9,7 +9,6 @@ public interface StudentRepository {
     void update(StudentDO studentDO);
     SubjectDO findById(int id);
 
-
 }
 
 

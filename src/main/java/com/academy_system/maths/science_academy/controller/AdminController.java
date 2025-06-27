@@ -196,14 +196,14 @@ public class AdminController {
 
     @PostMapping("/captureLesson")
     public ResponseEntity<?> captureLesson(@RequestBody SubjectDO subjectDO) {
-        for(LessonDO lessonDO: subjectDO.getLessons() ){
-            System.out.println(lessonDO.getTopic());
-            System.out.println(lessonDO.getSubTopic());
-            for (AttendanceDO attendanceDO : lessonDO.getAttendances()){
-                System.out.println(attendanceDO.getStudent().getUser().getUsername());
-                System.out.println(attendanceDO.isPresent());
-            }
-        }
+//        for(LessonDO lessonDO: subjectDO.getLessons() ){
+//            System.out.println(lessonDO.getTopic());
+//            System.out.println(lessonDO.getSubTopic());
+//            for (AttendanceDO attendanceDO : lessonDO.getAttendances()){
+//                System.out.println(attendanceDO.getStudent().getUser().getUsername());
+//                System.out.println(attendanceDO.isPresent());
+//            }
+//        }
         String cutName = subjectDO.getLessons().get(0).getAttendances().get(0).getStudent().getUser().getPassword().substring(6);
 //        subjectDO.getStudents().get(0).getUser().setPassword(cutName);
         ResponseRequest responseRequest = new ResponseRequest();
@@ -246,5 +246,75 @@ public class AdminController {
         }
     }
 
-   
+    @PostMapping("/de-registerStudent")
+
+    public ResponseEntity<?> deRegisterStudent(@RequestBody StudentDO studentDO) {
+        System.out.println(studentDO.getUser().getUsername());
+        System.out.println(studentDO.getUser().getPassword());
+
+        String cutName = studentDO.getUser().getPassword().substring(6);
+//        subjectDO.getStudents().get(0).getUser().setPassword(cutName);
+        ResponseRequest responseRequest = new ResponseRequest();
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken( studentDO.getUser().getUsername(),cutName)
+
+            );
+
+
+             studentDO = service.deRegisterStudent(studentDO);
+
+            return ResponseEntity.ok(studentDO);
+        } catch (BadCredentialsException e) {
+            responseRequest.setMessage("bad credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NOT AUTHORIZED");
+        }
+    }
+
+
+    @PostMapping("/viewTimeTable")
+
+    public ResponseEntity<?> viewTimeTable(@RequestBody StudentDO studentDO) {
+        String cutName = studentDO.getUser().getPassword().substring(6);
+        studentDO.getUser().setPassword(cutName);
+        ResponseRequest responseRequest = new ResponseRequest();
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(studentDO.getUser().getUsername(), studentDO.getUser().getPassword())
+
+            );
+
+
+            return ResponseEntity.ok(service.viewTimeTable());
+        } catch (BadCredentialsException e) {
+            responseRequest.setMessage("bad credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NOT AUTHORIZED");
+        }
+    }
+
+
+    @PostMapping("/viewBestPerformingStudents")
+    public ResponseEntity<?> viewBestPerformingStudents(@RequestBody StudentDO studentDO) {
+        String cutName = studentDO.getUser().getPassword().substring(6);
+        studentDO.getUser().setPassword(cutName);
+        ResponseRequest responseRequest = new ResponseRequest();
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(studentDO.getUser().getUsername(), studentDO.getUser().getPassword())
+
+            );
+            System.out.println(studentDO.getUser().getUsername());
+            System.out.println(studentDO.getUser().getPassword());
+
+
+            List<SubjectDO> subjects = service.bestPerformingStudents();
+
+
+            return ResponseEntity.ok(subjects);
+        } catch (BadCredentialsException e) {
+            responseRequest.setMessage("bad credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NOT AUTHORIZED");
+        }
+    }
+
 }
